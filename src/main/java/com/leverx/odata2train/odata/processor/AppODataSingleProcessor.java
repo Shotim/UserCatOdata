@@ -1,7 +1,9 @@
 package com.leverx.odata2train.odata.processor;
 
 import com.leverx.odata2train.repository.CatRepository;
+import com.leverx.odata2train.repository.CatRepositoryImpl;
 import com.leverx.odata2train.repository.UserRepository;
+import com.leverx.odata2train.repository.UserRepositoryImpl;
 import org.apache.olingo.odata2.api.edm.EdmEntitySet;
 import org.apache.olingo.odata2.api.edm.EdmLiteralKind;
 import org.apache.olingo.odata2.api.edm.EdmProperty;
@@ -28,8 +30,8 @@ import static org.apache.olingo.odata2.api.exception.ODataNotFoundException.ENTI
 
 public class AppODataSingleProcessor extends ODataSingleProcessor {
 
-    private UserRepository userRepository = new UserRepository();
-    private CatRepository catRepository = new CatRepository();
+    private UserRepository userRepository = new UserRepositoryImpl();
+    private CatRepository catRepository = new CatRepositoryImpl();
 
     @Override
     public ODataResponse readEntity(GetEntityUriInfo uriInfo, String contentType) throws ODataException {
