@@ -35,25 +35,25 @@ public class AppODataSingleProcessor extends ODataSingleProcessor {
     public ODataResponse readEntity(GetEntityUriInfo uriInfo, String contentType) throws ODataException {
         if (uriInfo.getNavigationSegments().size() == 0) {
             EdmEntitySet entitySet = uriInfo.getStartEntitySet();
-
-            if (ENTITY_SET_NAME_USERS.equals(entitySet.getName())) {
-                KeyPredicate key = uriInfo.getKeyPredicates().get(0);
-                long id = getKeyValue(key);
-                Map<String, Object> user = userRepository.getById(id);
-
-                if (user != null) {
-                    return getODataResponse(contentType, entitySet, user);
-                }
-            } else if (ENTITY_SET_NAME_CATS.equals(entitySet.getName())) {
-                KeyPredicate key = uriInfo.getKeyPredicates().get(0);
-                long id = getKeyValue(key);
-                Map<String, Object> cat = catRepository.getById(id);
-
-                if (cat != null) {
-                    return getODataResponse(contentType, entitySet, cat);
-                }
+            String entitySetName = entitySet.getName();
+            KeyPredicate key = uriInfo.getKeyPredicates().get(0);
+            long id = getKeyValue(key);
+            switch (entitySetName) {
+                case ENTITY_SET_NAME_USERS:
+                    Map<String, Object> user = userRepository.getById(id);
+                    if (user != null) {
+                        return getODataResponse(contentType, entitySet, user);
+                    }
+                    break;
+                case ENTITY_SET_NAME_CATS:
+                    Map<String, Object> cat = catRepository.getById(id);
+                    if (cat != null) {
+                        return getODataResponse(contentType, entitySet, cat);
+                    }
+                    break;
+                default:
+                    throw new ODataNotFoundException(ENTITY);
             }
-            throw new ODataNotFoundException(ENTITY);
         } else if (uriInfo.getNavigationSegments().size() == 1) {
 
             EdmEntitySet entitySet = uriInfo.getTargetEntitySet();
@@ -72,22 +72,26 @@ public class AppODataSingleProcessor extends ODataSingleProcessor {
     public ODataResponse readEntitySet(GetEntitySetUriInfo uriInfo, String contentType) throws ODataException {
         if (uriInfo.getNavigationSegments().size() == 0) {
             EdmEntitySet entitySet = uriInfo.getStartEntitySet();
-            if (ENTITY_SET_NAME_CATS.equals(entitySet.getName())) {
-                List<Map<String, Object>> cats = catRepository.getAll();
-                URI serviceRoot = getContext().getPathInfo().getServiceRoot();
-                ODataEntityProviderPropertiesBuilder oDataEntityProviderPropertiesBuilder
-                        = EntityProviderWriteProperties.serviceRoot(serviceRoot);
-                return writeFeed(contentType, entitySet, cats, oDataEntityProviderPropertiesBuilder.build());
-            } else if (ENTITY_SET_NAME_USERS.equals(entitySet.getName())) {
-                List<Map<String, Object>> users = userRepository.getAll();
-                URI serviceRoot = getContext().getPathInfo().getServiceRoot();
-                ODataEntityProviderPropertiesBuilder oDataEntityProviderPropertiesBuilder
-                        = EntityProviderWriteProperties.serviceRoot(serviceRoot);
-                return writeFeed(contentType, entitySet, users, oDataEntityProviderPropertiesBuilder.build());
+            String entitySetName = entitySet.getName();
+            switch (entitySetName) {
+                case ENTITY_SET_NAME_CATS:
+                    List<Map<String, Object>> cats = catRepository.getAll();
+                    return getODataResponse(contentType, entitySet, cats);
+                case ENTITY_SET_NAME_USERS:
+                    List<Map<String, Object>> users = userRepository.getAll();
+                    return getODataResponse(contentType, entitySet, users);
+                default:
+                    throw new ODataNotFoundException(ODataNotFoundException.ENTITY);
             }
-            throw new ODataNotFoundException(ODataNotFoundException.ENTITY);
         }
         throw new ODataNotFoundException(ODataNotFoundException.ENTITY);
+    }
+
+    private ODataResponse getODataResponse(String contentType, EdmEntitySet entitySet, List<Map<String, Object>> entityList) throws ODataException {
+        URI serviceRoot = getContext().getPathInfo().getServiceRoot();
+        ODataEntityProviderPropertiesBuilder oDataEntityProviderPropertiesBuilder
+                = EntityProviderWriteProperties.serviceRoot(serviceRoot);
+        return writeFeed(contentType, entitySet, entityList, oDataEntityProviderPropertiesBuilder.build());
     }
 
     private ODataResponse getODataResponse(String contentType, EdmEntitySet entitySet, Map<String, Object> entity) throws ODataException {
