@@ -1,31 +1,30 @@
 package com.leverx.odata2train.repository;
 
+import com.leverx.odata2train.model.Cat;
+import com.leverx.odata2train.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
 
-@Repository
+@Repository(value = "catRepository")
 public class CatRepositoryImpl implements CatRepository {
 
-    public Map<String, Object> getById(long id) {
+    public Cat findById(long id) {
         if (id == 1) {
-            HashMap<String, Object> cat = new HashMap<>();
-            cat.put("Id", 1);
-            cat.put("Name", "Steve");
-            cat.put("Owner", null);
+            Cat cat = new Cat(1, "Cat", null);
+            User user = new User(1, "User", singletonList(cat));
+            cat.setOwner(user);
             return cat;
         }
-        return emptyMap();
+        return null;
     }
 
-    public List<Map<String, Object>> getAll() {
-        final ArrayList<Map<String, Object>> objects = new ArrayList<>();
-        objects.add(getById(1));
-        return objects;
+    public List<Cat> findAll() {
+        final ArrayList<Cat> cats = new ArrayList<>();
+        cats.add(findById(1));
+        return cats;
     }
 }

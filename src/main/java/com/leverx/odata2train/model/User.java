@@ -1,5 +1,6 @@
 package com.leverx.odata2train.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.apache.olingo.odata2.api.annotation.edm.EdmEntitySet;
@@ -23,6 +24,7 @@ import static org.apache.olingo.odata2.api.annotation.edm.EdmType.STRING;
 
 @Data
 @FieldDefaults(level = PRIVATE)
+@AllArgsConstructor
 @EdmEntitySet(name = ENTITY_SET_NAME_USERS, container = ENTITY_CONTAINER)
 @EdmEntityType(name = ENTITY_NAME_USER, namespace = NAMESPACE)
 public class User {

@@ -1,32 +1,33 @@
 package com.leverx.odata2train.repository;
 
+import com.leverx.odata2train.model.Cat;
+import com.leverx.odata2train.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 
-@Repository
+@Repository(value = "userRepository")
 public class UserRepositoryImpl implements UserRepository {
 
-    public Map<String, Object> getById(long id) {
+    public User findById(long id) {
         if (id == 1) {
-            HashMap<String, Object> user = new HashMap<>();
-            user.put("Id", 1);
-            user.put("Name", "Steve");
-            user.put("Cats", emptyList());
+            User user = new User(1, "User", emptyList());
+            Cat cat1 = new Cat(1, "1", user);
+            Cat cat2 = new Cat(2, "2", user);
+            Cat cat3 = new Cat(1, "3", user);
+            user.setCats(asList(cat1, cat2, cat3));
             return user;
         }
-        return emptyMap();
+        return null;
     }
 
-    public List<Map<String, Object>> getAll() {
-        final ArrayList<Map<String, Object>> objects = new ArrayList<>();
-        objects.add(getById(1));
-        return objects;
+    public List<User> findAll() {
+        final ArrayList<User> users = new ArrayList<>();
+        users.add(findById(1));
+        return users;
     }
 }

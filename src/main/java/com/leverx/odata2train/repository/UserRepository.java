@@ -1,11 +1,12 @@
 package com.leverx.odata2train.repository;
 
+import com.leverx.odata2train.model.User;
+
 import java.util.List;
-import java.util.Map;
 
 public interface UserRepository {
 
-    Map<String, Object> getById(long id);
+    User findById(long id);
 
-    List<Map<String, Object>> getAll();
+    List<User> findAll();
 }

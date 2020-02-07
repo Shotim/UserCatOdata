@@ -1,11 +1,12 @@
 package com.leverx.odata2train.repository;
 
+import com.leverx.odata2train.model.Cat;
+
 import java.util.List;
-import java.util.Map;
 
 public interface CatRepository {
 
-    Map<String, Object> getById(long id);
+    Cat findById(long id);
 
-    List<Map<String, Object>> getAll();
+    List<Cat> findAll();
 }
