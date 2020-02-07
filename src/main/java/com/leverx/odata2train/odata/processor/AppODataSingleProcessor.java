@@ -1,9 +1,8 @@
 package com.leverx.odata2train.odata.processor;
 
 import com.leverx.odata2train.repository.CatRepository;
-import com.leverx.odata2train.repository.CatRepositoryImpl;
 import com.leverx.odata2train.repository.UserRepository;
-import com.leverx.odata2train.repository.UserRepositoryImpl;
+import lombok.AllArgsConstructor;
 import org.apache.olingo.odata2.api.edm.EdmEntitySet;
 import org.apache.olingo.odata2.api.edm.EdmLiteralKind;
 import org.apache.olingo.odata2.api.edm.EdmProperty;
@@ -17,6 +16,7 @@ import org.apache.olingo.odata2.api.processor.ODataSingleProcessor;
 import org.apache.olingo.odata2.api.uri.KeyPredicate;
 import org.apache.olingo.odata2.api.uri.info.GetEntitySetUriInfo;
 import org.apache.olingo.odata2.api.uri.info.GetEntityUriInfo;
+import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.List;
@@ -28,10 +28,12 @@ import static org.apache.olingo.odata2.api.ep.EntityProvider.writeEntry;
 import static org.apache.olingo.odata2.api.ep.EntityProvider.writeFeed;
 import static org.apache.olingo.odata2.api.exception.ODataNotFoundException.ENTITY;
 
+@Component
+@AllArgsConstructor
 public class AppODataSingleProcessor extends ODataSingleProcessor {
 
-    private UserRepository userRepository = new UserRepositoryImpl();
-    private CatRepository catRepository = new CatRepositoryImpl();
+    private UserRepository userRepository;
+    private CatRepository catRepository;
 
     @Override
     public ODataResponse readEntity(GetEntityUriInfo uriInfo, String contentType) throws ODataException {

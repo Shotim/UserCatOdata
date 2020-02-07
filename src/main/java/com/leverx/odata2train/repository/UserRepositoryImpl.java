@@ -10,6 +10,7 @@ import java.util.Map;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     public Map<String, Object> getById(long id) {

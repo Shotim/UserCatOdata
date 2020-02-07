@@ -1,0 +1,7 @@
+applications:
+  - name: odata2train
+    instances: 1
+    memory: 1024M
+    host: odata2train-02-06-2020
+    path: target/odata2train-0.0.1-SNAPSHOT.jar
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git#v4.17.1

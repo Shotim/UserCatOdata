@@ -8,17 +8,20 @@ import org.apache.olingo.odata2.api.ODataServiceFactory;
 import org.apache.olingo.odata2.api.edm.provider.EdmProvider;
 import org.apache.olingo.odata2.api.exception.ODataException;
 import org.apache.olingo.odata2.api.processor.ODataContext;
-import org.apache.olingo.odata2.api.processor.ODataSingleProcessor;
+import org.springframework.stereotype.Component;
+
+import static com.leverx.odata2train.context.AppContext.getApplicationContext;
 
 @Slf4j
+@Component
 public class AppODataServiceFactory extends ODataServiceFactory {
 
     private static final String MODEL_PACKAGE = "com.leverx.odata2train.model";
-    private ODataSingleProcessor oDataSingleProcessor = new AppODataSingleProcessor();
 
     @Override
     public ODataService createService(ODataContext ctx) throws ODataException {
         EdmProvider edmProvider = new AnnotationEdmProvider(MODEL_PACKAGE);
+        AppODataSingleProcessor oDataSingleProcessor = (AppODataSingleProcessor) getApplicationContext().getBean("appODataSingleProcessor");
         return createODataSingleProcessorService(edmProvider, oDataSingleProcessor);
     }
 }
