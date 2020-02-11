@@ -17,6 +17,8 @@ import java.util.Map;
 import static com.leverx.odata2train.context.AppContext.getApplicationContext;
 import static com.leverx.odata2train.model.constants.ModelConstants.ENTITY_SET_NAME_CATS;
 import static com.leverx.odata2train.model.constants.ModelConstants.ENTITY_SET_NAME_USERS;
+import static org.apache.olingo.odata2.api.exception.ODataNotFoundException.*;
+
 
 public class AppDataSource implements DataSource {
 
@@ -37,7 +39,7 @@ public class AppDataSource implements DataSource {
             case ENTITY_SET_NAME_USERS:
                 return userRepository.findAll();
             default:
-                throw new ODataNotFoundException(ODataNotFoundException.ENTITY);
+                throw new ODataNotFoundException(ENTITY);
         }
     }
 
@@ -51,7 +53,7 @@ public class AppDataSource implements DataSource {
             case ENTITY_SET_NAME_USERS:
                 return userRepository.findById(firstLayerEntityId);
             default:
-                throw new ODataNotFoundException(ODataNotFoundException.ENTITY);
+                throw new ODataNotFoundException(ENTITY);
         }
     }
 
@@ -69,17 +71,15 @@ public class AppDataSource implements DataSource {
                 User user = (User) sourceData;
                 if (ENTITY_SET_NAME_CATS.equals(targetEntityName)) {
                     return user.getCats();
-                } else
-                    return null;
+                }
             case ENTITY_SET_NAME_CATS:
                 Cat cat = (Cat) sourceData;
                 if (ENTITY_SET_NAME_USERS.equals(targetEntityName)) {
                     return cat.getOwner();
-                } else
-                    return null;
-            default:
-                return null;
+                }
         }
+
+        return null;
     }
 
     @Override

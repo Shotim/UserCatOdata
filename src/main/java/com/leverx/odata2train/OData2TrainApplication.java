@@ -7,10 +7,10 @@ import static org.springframework.boot.SpringApplication.run;
 
 @ServletComponentScan
 @SpringBootApplication
-public class Odata2trainApplication {
+public class OData2TrainApplication {
 
     public static void main(String[] args) {
-        run(Odata2trainApplication.class, args);
+        run(OData2TrainApplication.class, args);
     }
 
 }
